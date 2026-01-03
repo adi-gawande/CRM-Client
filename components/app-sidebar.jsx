@@ -132,7 +132,6 @@ const data = {
   projects: [
     // General / Reference Masters
     { name: "User", url: "/hr/user", icon: Hash },
-    { name: "Prefixes", url: "/master/refs/prefixes", icon: Hash },
     { name: "Hospital", url: "/master/catalog/hospitals", icon: Hospital },
     { name: "Department", url: "/master/org/department", icon: Building },
     {
@@ -153,8 +152,8 @@ const data = {
 
     // Education / Qualifications
     {
-      name: "Diploma",
-      url: "/master/education/qualifications/diploma",
+      name: "leadType",
+      url: "/master/education/qualifications/leadType",
       icon: FileText,
     },
     {
@@ -199,7 +198,7 @@ const navByTeam = {
     { title: "User", url: "/hr/user", icon: Users },
   ],
 
-  MASTER: [],
+  MASTER: [{ title: "Prefixes", url: "/master/refs/prefixes", icon: Hash }],
 
   EXTRA: [
     { title: "Schedule", url: "/hr/schedule", icon: Users },
@@ -216,8 +215,8 @@ const navByTeam = {
     { title: "Service Rate", url: "/db/service-rate", icon: Hash },
     // Education / Qualifications
     {
-      title: "Diploma",
-      url: "/master/education/qualifications/diploma",
+      title: "leadType",
+      url: "/master/education/qualifications/leadType",
       icon: FileText,
     },
     {
@@ -298,9 +297,6 @@ const navByTeam = {
 
 export function AppSidebar({ ...props }) {
   const activeTeam = useSelector((state) => state.team.activeTeam);
-  const storedData = localStorage.getItem("user");
-
-  const user = storedData ? JSON.parse(storedData) : null;
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -313,7 +309,7 @@ export function AppSidebar({ ...props }) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

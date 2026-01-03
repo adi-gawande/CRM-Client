@@ -25,15 +25,24 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useDispatch, useSelector } from "react-redux";
+import { clearAuth } from "@/store/authSlice";
+import { clearCompany } from "@/store/companySlice";
+import { clearUser } from "@/store/userSlice";
 
-export function NavUser({ user }) {
+export function NavUser() {
   const { isMobile } = useSidebar();
   const router = useRouter();
+  const user = useSelector((state) => state.auth.auth);
+  const dispatch = useDispatch();
 
   // ✅ Logout handler
   const handleLogout = () => {
-    localStorage.clear(); // clear all stored data (user, tokens, etc.)
-    router.replace("/login"); // redirect to login page
+    dispatch(clearAuth());
+    dispatch(clearCompany());
+    dispatch(clearUser());
+    localStorage.clear();
+    router.replace("/login");
   };
 
   return (

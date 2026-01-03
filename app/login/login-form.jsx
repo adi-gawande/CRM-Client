@@ -9,15 +9,21 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { post } from "@/lib/api";
+import { get, post } from "@/lib/api";
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/store/authSlice";
+import { setCompany } from "@/store/companySlice";
+import { useRouter } from "next/navigation";
 // import { Spinner } from "@/components/ui/spinner";
 
 export function LoginForm({ className, ...props }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // ✅ Loading state
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,24 +33,21 @@ export function LoginForm({ className, ...props }) {
 
       if (response.success) {
         // Store token (sensitive) and user info (non-sensitive) separately
-        localStorage.setItem("token", response.data.token);
+        if (response.data.user.role === "admin") {
+          dispatch(setAuth(response.data.user));
 
-        // Store only non-sensitive user info
-        const userInfo = {
-          email: response.data.user.email,
-          role: response.data.user.role,
-          name: response.data.user.name,
-        };
-        localStorage.setItem("user", JSON.stringify(userInfo));
-        localStorage.setItem("companyId", response.data.user._id);
+          let res = await get(`/our-client/${response.data.user.companyId}`);
+          dispatch(setCompany(res.data));
+        }
+        localStorage.setItem("token", response.data.token);
 
         // Show success message
         toast.success(response.message || "Login successful");
 
         // Small delay to show the success message before redirect
         setTimeout(() => {
-          window.location.href = "/";
-        }, 1000);
+          router.push("/");
+        }, 500);
       } else {
         toast.error(response.message || "Login failed");
       }
