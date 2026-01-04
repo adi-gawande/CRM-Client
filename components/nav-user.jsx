@@ -7,6 +7,9 @@ import {
   CreditCard,
   LogOut,
   KeyRound,
+  Building2,
+  Settings,
+  Palette,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -103,6 +106,24 @@ export function NavUser() {
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => router.push("/auth/company")}>
+                <Building2 />
+                Company Setting
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuGroup>
+              <DropdownMenuItem onClick={() => router.push("/auth/setting")}>
+                <Settings />
+                Account Setting
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
                 Account
@@ -114,6 +135,10 @@ export function NavUser() {
               <DropdownMenuItem>
                 <Bell />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/auth/theme")}>
+                <Palette />
+                Change Theme
               </DropdownMenuItem>
             </DropdownMenuGroup>
 

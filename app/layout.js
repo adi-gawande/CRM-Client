@@ -1,57 +1,89 @@
-"use client";
+// "use client";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { Provider } from "react-redux";
-import { persistor, store } from "@/store/store";
-import { Toaster } from "sonner";
+// import { ThemeProvider } from "@/components/theme-provider";
+// import { Provider } from "react-redux";
+// import { persistor, store } from "@/store/store";
+// import { Toaster } from "sonner";
+// import "./globals.css";
+// import { PersistGate } from "redux-persist/integration/react";
+
+// // function ThemeInitializer() {
+// //   if (typeof window !== "undefined") {
+// //     const theme = localStorage.getItem("app-theme") || "theme6";
+// //     const dark = localStorage.getItem("app-dark") === "true";
+
+// //     document.documentElement.setAttribute("data-theme", theme);
+// //     document.documentElement.classList.toggle("dark", dark);
+// //   }
+// //   return null;
+// // }
+
+// export default function RootLayout({ children }) {
+//   return (
+//     <html lang="en" suppressHydrationWarning>
+//       {/* <head>
+//         <script
+//           dangerouslySetInnerHTML={{
+//             __html: `
+// (function () {
+//   try {
+//     const dark = localStorage.getItem("app-dark") === "true";
+//     if (dark) document.documentElement.classList.add("dark");
+//   } catch (e) {}
+// })();
+// `,
+//           }}
+//         />
+//       </head> */}
+//       <body>
+//         {/* <ThemeInitializer /> */}
+//         <ThemeProvider
+//           attribute="class"
+//           defaultTheme="light"
+//           enableSystem={false}
+//           disableTransitionOnChange
+//         >
+//           <Provider store={store}>
+//             <PersistGate loading={null} persistor={persistor}>
+//               <>{children}</>
+//             </PersistGate>
+//           </Provider>
+//           <Toaster position="top-right" richColors />
+//         </ThemeProvider>
+//       </body>
+//     </html>
+//   );
+// }
+
 import "./globals.css";
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { PersistGate } from "redux-persist/integration/react";
+import Providers from "./providers";
+
+export const metadata = {
+  title: "CRM Made Simplified",
+  description: "CRM Dashboard",
+};
 
 export default function RootLayout({ children }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const themeScript = `
+    (function () {
+      try {
+        const theme = localStorage.getItem("app-theme") || "theme6";
+        const dark = localStorage.getItem("app-dark") === "true";
 
-  useEffect(() => {
-    // Only run client-side
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-
-      // If no user or token and not already on login page → redirect
-      if (!token && pathname !== "/login") {
-        router.replace("/login");
-      }
-      // If user has both user and token but is on login page → redirect to dashboard
-      else if (token && pathname === "/login") {
-        router.replace("/");
-      }
-
-      // Prevent flicker by waiting until check is done
-      setIsCheckingAuth(false);
-    }
-  }, [router, pathname]);
-
-  // ⏳ Optional: show nothing (or a loader) while checking auth
-  if (isCheckingAuth) return null;
-
+        const root = document.documentElement;
+        root.setAttribute("data-theme", theme);
+        if (dark) root.classList.add("dark");
+        else root.classList.remove("dark");
+      } catch (e) {}
+    })();
+  `;
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <>{children}</>
-            </PersistGate>
-          </Provider>
-          <Toaster position="top-right" richColors />
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
