@@ -54,7 +54,7 @@ export default function ClientsPage() {
   /* ---------------- FETCH CLIENTS ---------------- */
   const fetchClients = async () => {
     try {
-      const res = await get("/client");
+      const res = await get("/lead");
       setClients(res?.data || []);
     } catch (err) {
       console.error("Fetch clients failed", err);
@@ -73,7 +73,7 @@ export default function ClientsPage() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await post("/client", formData);
+      await post("/lead", formData);
       setOpen(false);
       setFormData({
         ClientName: "",
@@ -106,10 +106,10 @@ export default function ClientsPage() {
     <div className="space-y-6">
       {/* HEADER */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold">Clients</h2>
-        <Button onClick={() => setOpen(true)}>
+        <h2 className="text-2xl font-semibold">Leads</h2>
+        <Button variant="outline" onClick={() => setOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
-          Add Client
+          Add Lead
         </Button>
       </div>
 

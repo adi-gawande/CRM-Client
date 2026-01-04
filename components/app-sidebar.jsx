@@ -132,23 +132,6 @@ const data = {
   projects: [
     // General / Reference Masters
     { name: "User", url: "/hr/user", icon: Hash },
-    { name: "Hospital", url: "/master/catalog/hospitals", icon: Hospital },
-    { name: "Department", url: "/master/org/department", icon: Building },
-    {
-      name: "Sub Department",
-      url: "/master/org/sub-departments",
-      icon: Layers,
-    },
-    {
-      name: "Department Type",
-      url: "/master/org/department-type",
-      icon: Tags,
-    },
-    {
-      name: "Department Sub Type",
-      url: "/master/org/department-sub-type",
-      icon: Shapes,
-    },
 
     // Education / Qualifications
     {
@@ -191,6 +174,8 @@ const navByTeam = {
   ],
 
   ADMIN: [
+    { title: "Prospect", url: "/admin/prospect", icon: Hash },
+    { title: "Lead", url: "/admin/lead", icon: Hash },
     { title: "Client", url: "/admin/client", icon: Hash },
     { title: "Invoice", url: "/admin/invoice", icon: Hospital },
     { title: "Task", url: "/admin/task", icon: Building },
