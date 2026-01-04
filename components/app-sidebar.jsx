@@ -198,7 +198,15 @@ const navByTeam = {
     { title: "User", url: "/hr/user", icon: Users },
   ],
 
-  MASTER: [{ title: "Prefixes", url: "/master/refs/prefixes", icon: Hash }],
+  MASTER: [{ title: "Prefixes", url: "/master/refs/prefixes", icon: Hash },
+    { title: "Bank Details", url: "/master/refs/bankdetails", icon: Hash },
+    { title: "Product-category", url: "/master/refs/product-category", icon: Hash },
+    { title: "Sub-Product-Category", url: "/master/refs/sub-product-category", icon: Hash },
+    { title: "Lead Reference", url: "/master/refs/lead-reference", icon: Hash },
+    { title: "Lead Status", url: "/master/refs/lead-status", icon: Hash },
+    { title: "Lead Type", url: "/master/refs/lead-type", icon: Hash },
+  ],
+
 
   EXTRA: [
     { title: "Schedule", url: "/hr/schedule", icon: Users },

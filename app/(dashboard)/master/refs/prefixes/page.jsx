@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -36,6 +37,9 @@ import {
 } from "@/components/ui/alert-dialog";
 
 const PrefixPage = () => {
+  
+ const { companyId }  = useSelector((state) => state.auth.auth);
+  
   const [prefixes, setPrefixes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -71,9 +75,14 @@ const PrefixPage = () => {
   const [bulkAddLinesCache, setBulkAddLinesCache] = useState([]);
 
   const fetchPrefixes = async () => {
+    if (!companyId) {
+      toast.error("Company ID not found");
+      return;
+    }
+    
     setLoading(true);
     try {
-      const res = await get("/prefix");
+      const res = await get(`/prefix?companyId=${companyId}`);
       setPrefixes(Array.isArray(res) ? res : []);
     } catch (err) {
       console.error(err);
@@ -92,15 +101,21 @@ const PrefixPage = () => {
       return;
     }
 
+    if (!companyId) {
+      toast.error("Company ID not found");
+      return;
+    }
+
     setSaving(true);
     try {
       if (editingPrefix) {
         await put(`/prefix/${editingPrefix._id}`, {
           name: prefixName,
+          companyId,
         });
         toast.success("Prefix updated");
       } else {
-        await post("/prefix", { name: prefixName });
+        await post("/prefix", { name: prefixName, companyId });
         toast.success("Prefix added");
       }
       setPrefixName("");
@@ -132,8 +147,15 @@ const PrefixPage = () => {
       setSingleDeleteOpen(false);
       return;
     }
+    
+    if (!companyId) {
+      toast.error("Company ID not found");
+      setSingleDeleteOpen(false);
+      return;
+    }
+    
     try {
-      await del(`/prefix/${deleteTarget._id}`);
+      await del(`/prefix/${deleteTarget._id}`, { companyId });
       setSelected((prev) => prev.filter((i) => i !== deleteTarget._id));
       await fetchPrefixes();
       toast.success("Prefix deleted");
@@ -155,10 +177,16 @@ const PrefixPage = () => {
   };
 
   const confirmBulkDelete = async () => {
+    if (!companyId) {
+      toast.error("Company ID not found");
+      setBulkDeleteOpen(false);
+      return;
+    }
+    
     try {
       for (const id of selected) {
         // eslint-disable-next-line no-await-in-loop
-        await del(`/prefix/${id}`);
+        await del(`/prefix/${id}`, { companyId });
       }
       setSelected([]);
       setSelectAll(false);
@@ -207,12 +235,18 @@ const PrefixPage = () => {
   // When user clicks Save in the confirm dialog, start network save,
   // close dialog and show toolbar Save All spinner (bulkSaving)
   const confirmBulkSave = async () => {
+    if (!companyId) {
+      toast.error("Company ID not found");
+      setBulkSaveConfirmOpen(false);
+      return;
+    }
+    
     setBulkSaving(true); // show spinner on toolbar Save All
     setBulkSaveConfirmOpen(false); // close confirm dialog
     try {
       for (const d of bulkData) {
         // eslint-disable-next-line no-await-in-loop
-        await put(`/prefix/${d._id}`, { name: d.name });
+        await put(`/prefix/${d._id}`, { name: d.name, companyId });
       }
       setIsBulkEditing(false);
       await fetchPrefixes();
@@ -249,12 +283,18 @@ const PrefixPage = () => {
   // When user clicks Add in the confirmation dialog -> start network add,
   // close confirm dialog, keep big-input dialog open, show spinner on that dialog's Save All button
   const confirmBulkAdd = async () => {
+    if (!companyId) {
+      toast.error("Company ID not found");
+      setBulkAddConfirmOpen(false);
+      return;
+    }
+    
     setBulkAddConfirmOpen(false); // close confirm dialog
     setBulkAdding(true); // show spinner on big-input dialog's Save All button
     try {
       for (const name of bulkAddLinesCache) {
         // eslint-disable-next-line no-await-in-loop
-        await post("/prefix", { name });
+        await post("/prefix", { name, companyId });
       }
       // clear and close big input after successful add
       setBulkAddText("");
