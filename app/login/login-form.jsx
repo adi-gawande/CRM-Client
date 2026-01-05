@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "@/store/authSlice";
 import { setCompany } from "@/store/companySlice";
 import { useRouter } from "next/navigation";
+import { setActiveTeam } from "@/store/teamSlice";
 // import { Spinner } from "@/components/ui/spinner";
 
 export function LoginForm({ className, ...props }) {
@@ -34,6 +35,7 @@ export function LoginForm({ className, ...props }) {
       if (response.success) {
         // Store token (sensitive) and user info (non-sensitive) separately
         if (response.data.user.role === "admin") {
+          dispatch(setActiveTeam("ADMIN"));
           dispatch(setAuth(response.data.user));
 
           let res = await get(`/our-client/${response.data.user.companyId}`);
@@ -45,9 +47,9 @@ export function LoginForm({ className, ...props }) {
         toast.success(response.message || "Login successful");
 
         // Small delay to show the success message before redirect
-        setTimeout(() => {
-          router.push("/");
-        }, 500);
+        // setTimeout(() => {
+        router.push("/");
+        // }, 500);
       } else {
         toast.error(response.message || "Login failed");
       }

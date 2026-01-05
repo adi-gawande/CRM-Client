@@ -41,11 +41,11 @@ export function NavUser() {
 
   // ✅ Logout handler
   const handleLogout = () => {
+    router.replace("/login");
     dispatch(clearAuth());
     dispatch(clearCompany());
     dispatch(clearUser());
     localStorage.clear();
-    router.replace("/login");
   };
 
   return (

@@ -50,7 +50,6 @@ const DesignationPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [editingDesignation, setEditingDesignation] = useState(null);
   const [formData, setFormData] = useState({
-    employeeRole: "",
     designationName: "",
     designationCode: "",
     description: "",
@@ -93,8 +92,10 @@ const DesignationPage = () => {
   }, []);
 
   const handleSave = async () => {
-    if (!formData.employeeRole.trim() || !formData.designationName.trim() || !formData.designationCode.trim()) {
-      toast.error("Employee Role, Designation Name, and Designation Code are required");
+    if (!formData.designationName.trim() || !formData.designationCode.trim()) {
+      toast.error(
+        "Employee Role, Designation Name, and Designation Code are required"
+      );
       return;
     }
 
@@ -108,7 +109,6 @@ const DesignationPage = () => {
         toast.success("Designation added");
       }
       setFormData({
-        employeeRole: "",
         designationName: "",
         designationCode: "",
         description: "",
@@ -127,7 +127,6 @@ const DesignationPage = () => {
   const handleEdit = (d) => {
     setEditingDesignation(d);
     setFormData({
-      employeeRole: d.employeeRole,
       designationName: d.designationName,
       designationCode: d.designationCode,
       description: d.description || "",
@@ -209,8 +208,14 @@ const DesignationPage = () => {
       toast.error("No items to save.");
       return;
     }
-    const empty = bulkData.some((d) => !d.employeeRole || !d.designationName || !d.designationCode || 
-      !d.employeeRole.trim() || !d.designationName.trim() || !d.designationCode.trim());
+    const empty = bulkData.some(
+      (d) =>
+        !d.designationName ||
+        !d.designationCode ||
+        !d.employeeRole.trim() ||
+        !d.designationName.trim() ||
+        !d.designationCode.trim()
+    );
     if (empty) {
       toast.error("All required fields must be filled before saving.");
       return;
@@ -228,7 +233,6 @@ const DesignationPage = () => {
       for (const d of bulkData) {
         // eslint-disable-next-line no-await-in-loop
         await put(`/designation/${d._id}`, {
-          employeeRole: d.employeeRole,
           designationName: d.designationName,
           designationCode: d.designationCode,
           description: d.description,
@@ -262,13 +266,15 @@ const DesignationPage = () => {
     }
 
     // Validate format: each line should have at least 3 parts separated by commas
-    const invalidLines = lines.filter(line => {
-      const parts = line.split(",").map(p => p.trim());
+    const invalidLines = lines.filter((line) => {
+      const parts = line.split(",").map((p) => p.trim());
       return parts.length < 3 || !parts[0] || !parts[1] || !parts[2];
     });
 
     if (invalidLines.length > 0) {
-      toast.error("Each line must have: Employee Role, Designation Name, Designation Code (comma-separated)");
+      toast.error(
+        "Each line must have: Employee Role, Designation Name, Designation Code (comma-separated)"
+      );
       return;
     }
 
@@ -284,14 +290,13 @@ const DesignationPage = () => {
     setBulkAdding(true); // show spinner on big-input dialog's Save All button
     try {
       for (const line of bulkAddLinesCache) {
-        const parts = line.split(",").map(p => p.trim());
-        const [employeeRole, designationName, designationCode, description = ""] = parts;
+        const parts = line.split(",").map((p) => p.trim());
+        const [designationName, designationCode, description = ""] = parts;
         // eslint-disable-next-line no-await-in-loop
-        await post("/designation", { 
-          employeeRole, 
-          designationName, 
-          designationCode, 
-          description 
+        await post("/designation", {
+          designationName,
+          designationCode,
+          description,
         });
       }
       // clear and close big input after successful add
@@ -373,7 +378,9 @@ const DesignationPage = () => {
 
           <div className="mt-2 space-y-2">
             <p className="text-sm text-muted-foreground">
-              Paste a list of designations below — one per line in format: Employee Role, Designation Name, Designation Code, Description (optional)
+              Paste a list of designations below — one per line in format:
+              Employee Role, Designation Name, Designation Code, Description
+              (optional)
             </p>
             <textarea
               className="w-full min-h-[200px] rounded-md border border-input bg-background p-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -418,7 +425,7 @@ const DesignationPage = () => {
               />
             </TableHead>
             <TableHead className="w-1/12 text-left">Sr No</TableHead>
-            <TableHead className="w-2/12 text-left">Employee Role</TableHead>
+
             <TableHead className="w-2/12 text-left">Designation Name</TableHead>
             <TableHead className="w-2/12 text-left">Designation Code</TableHead>
             <TableHead className="w-2/12 text-left">Description</TableHead>
@@ -461,29 +468,7 @@ const DesignationPage = () => {
                   />
                 </TableCell>
                 <TableCell className="text-left">{index + 1}</TableCell>
-                <TableCell className="text-left">
-                  {isBulkEditing ? (
-                    <Input
-                      value={
-                        bulkData.find((item) => item._id === designation._id)
-                          ?.employeeRole || ""
-                      }
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setBulkData((prev) =>
-                          prev.map((item) =>
-                            item._id === designation._id
-                              ? { ...item, employeeRole: value }
-                              : item
-                          )
-                        );
-                      }}
-                      disabled={bulkSaving || bulkAdding}
-                    />
-                  ) : (
-                    designation.employeeRole
-                  )}
-                </TableCell>
+
                 <TableCell className="text-left">
                   {isBulkEditing ? (
                     <Input
@@ -591,19 +576,16 @@ const DesignationPage = () => {
 
           <div className="space-y-4 mt-2">
             <div>
-              <label className="text-sm font-medium">Employee Role *</label>
-              <Input
-                placeholder="Employee Role"
-                value={formData.employeeRole}
-                onChange={(e) => setFormData(prev => ({ ...prev, employeeRole: e.target.value }))}
-              />
-            </div>
-            <div>
               <label className="text-sm font-medium">Designation Name *</label>
               <Input
                 placeholder="Designation Name"
                 value={formData.designationName}
-                onChange={(e) => setFormData(prev => ({ ...prev, designationName: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    designationName: e.target.value,
+                  }))
+                }
               />
             </div>
             <div>
@@ -611,7 +593,12 @@ const DesignationPage = () => {
               <Input
                 placeholder="Designation Code"
                 value={formData.designationCode}
-                onChange={(e) => setFormData(prev => ({ ...prev, designationCode: e.target.value.toUpperCase() }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    designationCode: e.target.value.toUpperCase(),
+                  }))
+                }
               />
             </div>
             <div>
@@ -619,7 +606,12 @@ const DesignationPage = () => {
               <Textarea
                 placeholder="Description (optional)"
                 value={formData.description}
-                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }))
+                }
                 rows={3}
               />
             </div>
@@ -656,8 +648,8 @@ const DesignationPage = () => {
             <AlertDialogTitle>Delete Designation</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to delete{" "}
-              <strong>{deleteTarget?.designationName}</strong>? This action can be undone
-              by restoring on the server only (soft-delete).
+              <strong>{deleteTarget?.designationName}</strong>? This action can
+              be undone by restoring on the server only (soft-delete).
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

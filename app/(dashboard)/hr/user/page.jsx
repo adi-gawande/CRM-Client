@@ -68,8 +68,8 @@ export default function Page() {
   const [diplomas, setDiplomas] = useState([]);
   const [graduations, setGraduations] = useState([]);
   const [postGraduations, setPostGraduations] = useState([]);
-  const [specialities, setSpecialities] = useState([]);
-  const [councils, setCouncils] = useState([]);
+  // const [specialities, setSpecialities] = useState([]);
+  // const [councils, setCouncils] = useState([]);
 
   const [form, setForm] = useState({
     employeeCode: "",
@@ -102,14 +102,14 @@ export default function Page() {
       diploma: "",
       graduation: "",
       postGraduation: "",
-      superSpecialization: "",
+      // superSpecialization: "",
       other: "",
     },
 
-    registrationNumber: "",
-    councilName: "",
-    verified: false,
-    verifiedBy: null,
+    // registrationNumber: "",
+    // councilName: "",
+    // verified: false,
+    // verifiedBy: null,
   });
 
   /* ========================
@@ -214,8 +214,8 @@ export default function Page() {
         diplomaRes,
         graduationRes,
         postRes,
-        specialityRes,
-        councilRes,
+        // specialityRes,
+        // councilRes,
       ] = await Promise.all([
         get("/prefix"),
         get("/department"),
@@ -224,8 +224,8 @@ export default function Page() {
         get("/diploma"),
         get("/graduation"),
         get("/post-graduation"),
-        get("/speciality"),
-        get("/council"),
+        // get("/speciality"),
+        // get("/council"),
       ]);
 
       setPrefixes(prefixRes || []);
@@ -235,8 +235,8 @@ export default function Page() {
       setDiplomas(diplomaRes || []);
       setGraduations(graduationRes || []);
       setPostGraduations(postRes || []);
-      setSpecialities(specialityRes || []);
-      setCouncils(councilRes || []);
+      // setSpecialities(specialityRes || []);
+      // setCouncils(councilRes || []);
     } catch (err) {
       console.error("Failed to load master data", err);
     }
@@ -762,7 +762,7 @@ export default function Page() {
 
               {/* Row 2: Speciality / Other Qualification */}
               <div className="flex flex-wrap gap-4 mt-4">
-                <div className="w-full sm:w-[calc(50%-0.5rem)]">
+                {/* <div className="w-full sm:w-[calc(50%-0.5rem)]">
                   <Select
                     value={form.qualification?.superSpecialization || ""}
                     onValueChange={(v) =>
@@ -780,7 +780,7 @@ export default function Page() {
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
 
                 <Input
                   name="qualification.other"
@@ -794,11 +794,11 @@ export default function Page() {
             <FieldSeparator />
 
             {/* REGISTRATION */}
-            <FieldGroup>
-              <FieldTitle>Registration</FieldTitle>
+            {/* <FieldGroup>
+              <FieldTitle>Registration</FieldTitle> */}
 
-              {/* Row 1: Registration Number / Council */}
-              <div className="flex flex-wrap gap-4">
+            {/* Row 1: Registration Number / Council */}
+            {/* <div className="flex flex-wrap gap-4">
                 <Input
                   name="registrationNumber"
                   placeholder="Registration Number"
@@ -821,10 +821,10 @@ export default function Page() {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
 
-              {/* Row 2: Verified / Verified By */}
-              <div className="flex flex-wrap gap-4 mt-4 items-center">
+            {/* Row 2: Verified / Verified By */}
+            {/* <div className="flex flex-wrap gap-4 mt-4 items-center">
                 <div className="w-full sm:w-[calc(50%-0.5rem)] flex items-center gap-2">
                   <Checkbox
                     id="isVerified"
@@ -849,7 +849,7 @@ export default function Page() {
                   className="w-full sm:w-[calc(50%-0.5rem)]"
                 />
               </div>
-            </FieldGroup>
+            </FieldGroup> */}
 
             <DialogFooter>
               <Button variant="outline" onClick={() => setOpen(false)}>

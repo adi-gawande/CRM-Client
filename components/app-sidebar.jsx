@@ -70,11 +70,6 @@ const data = {
       logo: Database,
       plan: "23 Databases",
     },
-    {
-      name: "EXTRA",
-      logo: Database,
-      plan: "23 Databases",
-    },
   ],
 
   navMain: [
@@ -183,108 +178,37 @@ const navByTeam = {
     { title: "User", url: "/hr/user", icon: Users },
   ],
 
-  MASTER: [{ title: "Prefixes", url: "/master/refs/prefixes", icon: Hash },
-    { title: "Bank Details", url: "/master/refs/bankdetails", icon: Hash },
-    { title: "Product-category", url: "/master/refs/product-category", icon: Hash },
-    { title: "Sub-Product-Category", url: "/master/refs/sub-product-category", icon: Hash },
-    { title: "Lead Reference", url: "/master/refs/lead-reference", icon: Hash },
-    { title: "Lead Status", url: "/master/refs/lead-status", icon: Hash },
-    { title: "Lead Type", url: "/master/refs/lead-type", icon: Hash },
-  ],
-
-
-  EXTRA: [
-    { title: "Schedule", url: "/hr/schedule", icon: Users },
-    { title: "UHID", url: "/db/uhid", icon: Hash },
-    { title: "Logs", url: "/db/logs", icon: Hash },
-    { title: "Audit", url: "/db/audit", icon: Hash },
-    { title: "Ledger", url: "/db/ledger", icon: Hash },
-    { title: "Sub Ledger", url: "/db/sub-ledger", icon: Hash },
-
-    { title: "Payment Mode", url: "/db/payment-mode", icon: Hash },
-    { title: "Payee Category", url: "/db/payee-category", icon: Hash },
-    { title: "Service Group", url: "/db/service-group", icon: Hash },
-    { title: "Service Detail", url: "/db/service-detail", icon: Hash },
-    { title: "Service Rate", url: "/db/service-rate", icon: Hash },
-    // Education / Qualifications
+  MASTER: [
+    { title: "Prefixes", url: "/master/prefixes", icon: Hash },
+    { title: "Bank Details", url: "/master/bankdetails", icon: Hash },
     {
-      title: "leadType",
-      url: "/master/education/qualifications/leadType",
-      icon: FileText,
+      title: "Product-category",
+      url: "/master/product-category",
+      icon: Hash,
     },
     {
+      title: "Sub-Product-Category",
+      url: "/master/sub-product-category",
+      icon: Hash,
+    },
+    { title: "Lead Reference", url: "/master/lead-reference", icon: Hash },
+    { title: "Lead Status", url: "/master/lead-status", icon: Hash },
+    { title: "Lead Type", url: "/master/lead-type", icon: Hash },
+    { title: "Lead Source", url: "/master/lead-source", icon: Hash },
+    {
       title: "Graduation",
-      url: "/master/education/qualifications/graduation",
+      url: "/master/graduation",
       icon: GraduationCap,
     },
     {
       title: "Post Graduation",
-      url: "/master/education/qualifications/post-graduation",
+      url: "/master/post-graduation",
       icon: Award,
-    },
-    {
-      title: "Super Speciality",
-      url: "/master/education/specialities",
-      icon: Stethoscope,
-    },
-    {
-      title: "Regulatory Councils",
-      url: "/master/education/councils",
-      icon: BookOpen,
     },
 
     // HR / User Management
     { title: "Employee Role", url: "/master/roles", icon: Briefcase },
-    { title: "Designation", url: "/general-setup/designation", icon: Tag },
-    {
-      title: "Appointments",
-      url: "/opd/appointments",
-      icon: CalendarPlus,
-      items: [
-        { title: "Company", url: "/hr/company" },
-        { title: "User", url: "/hr/user" }, // { title: "Department", url: "/general-setup/department" },
-      ],
-    },
-    {
-      title: "Visit Registration",
-      url: "/opd/registration",
-      icon: ClipboardList,
-      items: [
-        { title: "Company", url: "/hr/company" },
-        { title: "User", url: "/hr/user" },
-        // { title: "Department", url: "/general-setup/department" },
-      ],
-    },
-    {
-      title: "Billing",
-      url: "/billing",
-      icon: IndianRupee,
-      items: [
-        { title: "Company", url: "/hr/company" },
-        { title: "User", url: "/hr/user" },
-        // { title: "Department", url: "/general-setup/department" },
-      ],
-    },
-    {
-      title: "All Patients",
-      url: "/patients",
-      icon: Users,
-      items: [
-        // { title: "Company", url: "/hr/company" },
-        // { title: "User", url: "/hr/user" },
-        // { title: "Department", url: "/general-setup/department" },
-      ],
-    },
-    {
-      title: "EMR",
-      url: "/emr",
-      icon: FileText,
-      items: [
-        // { title: "Company", url: "/hr/company" },
-        // { title: "User", url: "/hr/user" },
-        // { title: "Department", url: "/general-setup/department" },
-      ],
-    },
+    { title: "Designation", url: "//designation", icon: Tag },
   ],
 };
 
