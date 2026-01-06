@@ -190,10 +190,15 @@ const navByTeam = {
     { title: "Lead Reference", url: "/master/refs/lead-reference", icon: Hash },
     { title: "Lead Status", url: "/master/refs/lead-status", icon: Hash },
     { title: "Lead Type", url: "/master/refs/lead-type", icon: Hash },
+    { title: "GST-Percentage", url: "/master/refs/gst-percentage", icon: Hash },
+    { title: "Position", url: "/master/refs/position", icon: Hash },
+    { title: "Status", url: "/master/refs/status", icon: Hash },
+    { title: "Department", url: "/master/refs/department", icon: Hash },
   ],
 
 
   EXTRA: [
+
     { title: "Schedule", url: "/hr/schedule", icon: Users },
     { title: "UHID", url: "/db/uhid", icon: Hash },
     { title: "Logs", url: "/db/logs", icon: Hash },
