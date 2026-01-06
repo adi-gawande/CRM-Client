@@ -41,11 +41,11 @@ export function NavUser() {
 
   // ✅ Logout handler
   const handleLogout = () => {
+    router.replace("/login");
     dispatch(clearAuth());
     dispatch(clearCompany());
     dispatch(clearUser());
     localStorage.clear();
-    router.replace("/login");
   };
 
   return (
@@ -95,20 +95,9 @@ export function NavUser() {
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => router.push("/auth/change-password")}
-              >
-                <KeyRound />
-                Change Password
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => router.push("/auth/company")}>
                 <Building2 />
-                Company Setting
+                Company
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
@@ -117,7 +106,7 @@ export function NavUser() {
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={() => router.push("/auth/setting")}>
                 <Settings />
-                Account Setting
+                Setting
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
@@ -139,6 +128,14 @@ export function NavUser() {
               <DropdownMenuItem onClick={() => router.push("/auth/theme")}>
                 <Palette />
                 Change Theme
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() => router.push("/auth/change-password")}
+              >
+                <KeyRound />
+                Change Password
               </DropdownMenuItem>
             </DropdownMenuGroup>
 

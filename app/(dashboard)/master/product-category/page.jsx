@@ -38,7 +38,7 @@ import {
 import { Label } from "@/components/ui/label";
 
 const ProductCategoryPage = () => {
-  const { companyId } = useSelector((state) => state.auth.auth);
+  const { companyId } = useSelector((state) => state?.auth?.auth || "null");
 
   const [productCategories, setProductCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ const ProductCategoryPage = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
-  
+
   const [productName, setProductName] = useState("");
 
   const [selected, setSelected] = useState([]);
@@ -179,7 +179,7 @@ const ProductCategoryPage = () => {
 
     try {
       await Promise.all(
-        selected.map(id => del(`/product-category/${id}`, { companyId }))
+        selected.map((id) => del(`/product-category/${id}`, { companyId }))
       );
       setSelected([]);
       setSelectAll(false);
@@ -215,14 +215,14 @@ const ProductCategoryPage = () => {
       toast.error("No items to save.");
       return;
     }
-    
+
     const invalid = bulkData.some((d) => !d.productName?.trim());
-    
+
     if (invalid) {
       toast.error("Product name must be filled before saving.");
       return;
     }
-    
+
     setBulkSaveCount(bulkData.length);
     setBulkSaveConfirmOpen(true);
   };
@@ -236,10 +236,10 @@ const ProductCategoryPage = () => {
 
     setBulkSaving(true);
     setBulkSaveConfirmOpen(false);
-    
+
     try {
       await Promise.all(
-        bulkData.map(d => 
+        bulkData.map((d) =>
           put(`/product-category/${d._id}`, {
             productName: d.productName,
             companyId,
@@ -267,7 +267,7 @@ const ProductCategoryPage = () => {
               Delete Selected ({selected.length})
             </Button>
           )}
-          
+
           {productCategories.length > 0 && (
             <Button
               variant={isBulkEditing ? "secondary" : "outline"}
@@ -290,10 +290,12 @@ const ProductCategoryPage = () => {
             </Button>
           )}
 
-          <Button onClick={() => {
-            resetForm();
-            setOpenDialog(true);
-          }}>
+          <Button
+            onClick={() => {
+              resetForm();
+              setOpenDialog(true);
+            }}
+          >
             Add Product Category
           </Button>
         </div>
@@ -355,7 +357,7 @@ const ProductCategoryPage = () => {
                     />
                   </TableCell>
                   <TableCell>{index + 1}</TableCell>
-                  
+
                   <TableCell>
                     {isBulkEditing ? (
                       <Input
@@ -412,13 +414,17 @@ const ProductCategoryPage = () => {
         <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle>
-              {editingCategory ? "Edit Product Category" : "Add Product Category"}
+              {editingCategory
+                ? "Edit Product Category"
+                : "Add Product Category"}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 mt-2">
             <div className="space-y-2">
-              <Label htmlFor="productName">Product Name <span className="text-red-500">*</span></Label>
+              <Label htmlFor="productName">
+                Product Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="productName"
                 placeholder="Enter product name"
@@ -442,7 +448,9 @@ const ProductCategoryPage = () => {
 
             <Button onClick={handleSave} disabled={saving}>
               {saving ? (
-                <Spinner>{editingCategory ? "Updating..." : "Adding..."}</Spinner>
+                <Spinner>
+                  {editingCategory ? "Updating..." : "Adding..."}
+                </Spinner>
               ) : editingCategory ? (
                 "Update"
               ) : (
@@ -459,8 +467,8 @@ const ProductCategoryPage = () => {
             <AlertDialogTitle>Delete Product Category</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to delete product category{" "}
-              <strong>{deleteTarget?.productName}</strong>? This action can be undone
-              by restoring on the server only (soft-delete).
+              <strong>{deleteTarget?.productName}</strong>? This action can be
+              undone by restoring on the server only (soft-delete).
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -475,11 +483,13 @@ const ProductCategoryPage = () => {
       <AlertDialog open={bulkDeleteOpen} onOpenChange={setBulkDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Selected Product Categories</AlertDialogTitle>
+            <AlertDialogTitle>
+              Delete Selected Product Categories
+            </AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to delete <strong>{selected.length}</strong>{" "}
-              selected product categor{selected.length > 1 ? "ies" : "y"}? This action will
-              soft-delete them.
+              selected product categor{selected.length > 1 ? "ies" : "y"}? This
+              action will soft-delete them.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

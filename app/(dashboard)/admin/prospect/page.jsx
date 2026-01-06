@@ -15,6 +15,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -29,6 +36,10 @@ export default function ClientsPage() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { companyId } = useSelector((state) => state.auth.auth);
+  const [leadTypes, setLeadTypes] = useState([]);
+  const [leadStatuses, setLeadStatuses] = useState([]);
+  const [leadSources, setLeadSources] = useState([]);
+  const [leadRefferences, setLeadRefferences] = useState([]);
 
   const [formData, setFormData] = useState({
     ClientName: "",
@@ -48,6 +59,10 @@ export default function ClientsPage() {
     Website: "",
     startDate: "",
     endDate: "",
+    leadTypeId: "",
+    leadSourceId: "",
+    leadReferenceId: "",
+    leadStatusId: "",
     companyId,
   });
 
@@ -61,8 +76,20 @@ export default function ClientsPage() {
     }
   };
 
+  const fetchMasters = async () => {
+    const types = await get(`/lead-type?companyId=${companyId}`);
+    const statuses = await get(`/lead-status?companyId=${companyId}`);
+    const refferences = await get(`/lead-reference?companyId=${companyId}`);
+    const sources = await get(`/lead-source?companyId=${companyId}`);
+    setLeadRefferences(refferences);
+    setLeadSources(sources);
+    setLeadTypes(types);
+    setLeadStatuses(statuses);
+  };
+
   useEffect(() => {
     fetchClients();
+    fetchMasters();
   }, []);
 
   /* ---------------- FORM HANDLERS ---------------- */
@@ -121,7 +148,21 @@ export default function ClientsPage() {
               <TableHead>Client</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Phone</TableHead>
+              {/* <TableHead>alt Phone</TableHead>
+              <TableHead>alt Email</TableHead>
+              <TableHead>Address</TableHead> */}
               <TableHead>City</TableHead>
+              {/* <TableHead>State</TableHead>
+              <TableHead>Country</TableHead>
+              <TableHead>Pincode</TableHead>
+              <TableHead>GST</TableHead>
+              <TableHead>Pan</TableHead>
+              <TableHead>Website</TableHead> */}
+              <TableHead>Type</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead>Refference</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>CreatedAt</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -141,7 +182,27 @@ export default function ClientsPage() {
                 <TableCell>{client.ClientName}</TableCell>
                 <TableCell>{client.email}</TableCell>
                 <TableCell>{client.PhoneNumber}</TableCell>
+                {/* <TableCell>{client.AlternativePhoneNumber}</TableCell>
+                <TableCell>{client.AlternativeEmail}</TableCell>
+                <TableCell>{client.OfficeAddress || "-"}</TableCell> */}
                 <TableCell>{client.City || "-"}</TableCell>
+                {/* <TableCell>{client.State || "-"}</TableCell>
+                <TableCell>{client.Country || "-"}</TableCell>
+                <TableCell>{client.Pincode || "-"}</TableCell>
+                <TableCell>{client.GSTNumber || "-"}</TableCell>
+                <TableCell>{client.PanNumber || "-"}</TableCell>
+                <TableCell>{client.Website || "-"}</TableCell> */}
+                <TableCell>{client.leadTypeId.leadType || "-"}</TableCell>
+                <TableCell>{client.leadSourceId.leadSource || "-"}</TableCell>
+                <TableCell>
+                  {client.leadReferenceId.leadReference || "-"}
+                </TableCell>
+                <TableCell>{client.leadStatusId.leadStatus || "-"}</TableCell>
+                <TableCell>
+                  {client.createdAt
+                    ? new Date(client.createdAt).toLocaleDateString()
+                    : "-"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -152,7 +213,7 @@ export default function ClientsPage() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-4xl w-[85vw] h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Add Client</DialogTitle>
+            <DialogTitle>Add Prospect</DialogTitle>
           </DialogHeader>
 
           {/* BASIC INFO */}
@@ -199,6 +260,90 @@ export default function ClientsPage() {
                 onChange={handleChange}
                 className="w-full sm:w-[calc(50%-0.5rem)]"
               />
+            </div>
+          </FieldGroup>
+
+          <FieldSeparator />
+
+          <FieldGroup>
+            <FieldTitle>Lead Information</FieldTitle>
+
+            <div className="flex flex-wrap gap-4">
+              {/* Lead Type */}
+              <Select
+                value={formData.leadTypeId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, leadTypeId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Lead Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {leadTypes?.map((type) => (
+                    <SelectItem key={type._id} value={type._id}>
+                      {type.leadType}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Lead Source */}
+              <Select
+                value={formData.leadSourceId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, leadSourceId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Lead Source" />
+                </SelectTrigger>
+                <SelectContent>
+                  {leadSources?.map((source) => (
+                    <SelectItem key={source._id} value={source._id}>
+                      {source.leadSource}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Lead Reference */}
+              <Select
+                value={formData.leadReferenceId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, leadReferenceId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Lead Reference" />
+                </SelectTrigger>
+                <SelectContent>
+                  {leadRefferences?.map((ref) => (
+                    <SelectItem key={ref._id} value={ref._id}>
+                      {ref.leadReference}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Lead Statuses */}
+              <Select
+                value={formData.leadStatusId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, leadStatusId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Lead Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {leadStatuses?.map((ref) => (
+                    <SelectItem key={ref._id} value={ref._id}>
+                      {ref.leadStatus}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </FieldGroup>
 
@@ -339,7 +484,7 @@ export default function ClientsPage() {
               Cancel
             </Button>
             <Button onClick={handleSubmit} disabled={loading}>
-              {loading ? "Saving..." : "Save Client"}
+              {loading ? "Saving..." : "Save Prospect"}
             </Button>
           </DialogFooter>
         </DialogContent>
