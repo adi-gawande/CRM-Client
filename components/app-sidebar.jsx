@@ -208,7 +208,9 @@ const navByTeam = {
 
     // HR / User Management
     { title: "Employee Role", url: "/master/roles", icon: Briefcase },
-    { title: "Designation", url: "//designation", icon: Tag },
+    { title: "Designation", url: "/master/designation", icon: Tag },
+    { title: "sector", url: "/master/sector", icon: Tag },
+    { title: "size", url: "/master/size", icon: Tag },
   ],
 };
 

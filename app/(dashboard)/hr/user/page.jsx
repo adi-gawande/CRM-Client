@@ -52,8 +52,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { get, post } from "@/lib/api";
 import { format } from "date-fns";
 import { CalendarDay } from "react-day-picker";
+import { useSelector } from "react-redux";
 
 export default function Page() {
+  const { companyId } = useSelector((state) => state.auth.auth);
   /* ========================
      STATE
   ======================== */
@@ -208,28 +210,26 @@ export default function Page() {
     try {
       const [
         prefixRes,
-        departmentRes,
+        // departmentRes,
         designationRes,
         roleRes,
         diplomaRes,
         graduationRes,
         postRes,
-        // specialityRes,
-        // councilRes,
       ] = await Promise.all([
-        get("/prefix"),
-        get("/department"),
-        get("/designation"),
-        get("/role"),
-        get("/diploma"),
-        get("/graduation"),
-        get("/post-graduation"),
-        // get("/speciality"),
-        // get("/council"),
+        get(`/prefix?companyId=${companyId}`),
+        // get(`/department?companyId=${companyId}`),
+        get(`/designation?companyId=${companyId}`),
+        get(`/role?companyId=${companyId}`),
+        get(`/diploma?companyId=${companyId}`),
+        get(`/graduation?companyId=${companyId}`),
+        get(`/post-graduation?companyId=${companyId}`),
       ]);
 
+      console.log(post);
+
       setPrefixes(prefixRes || []);
-      setDepartments(departmentRes || []);
+      // setDepartments(departmentRes || []);
       setDesignations(designationRes || []);
       setRoles(roleRes || []);
       setDiplomas(diplomaRes || []);
@@ -283,7 +283,7 @@ export default function Page() {
             <Button>Add Employee</Button>
           </DialogTrigger>
 
-          <DialogContent className="max-w-4xl h-[85vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl h-[85vh] w-[85vw] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Add Employee</DialogTitle>
             </DialogHeader>
