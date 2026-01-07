@@ -46,12 +46,9 @@ export default function ClientsPage() {
   const [leadStatuses, setLeadStatuses] = useState([]);
   const [leadSources, setLeadSources] = useState([]);
   const [leadRefferences, setLeadRefferences] = useState([]);
-<<<<<<< HEAD
   const [fieldSettings, setFieldSettings] = useState({});
-=======
   const [sizes, setSizes] = useState([]);
   const [sectors, setSectors] = useState([]);
->>>>>>> d71b1fd5db4517703230cb595b61c8a9a1ede0a5
 
   const [formData, setFormData] = useState({
     ClientName: "",
@@ -357,7 +354,6 @@ export default function ClientsPage() {
                 </Select>
               )}
 
-<<<<<<< HEAD
               {fieldSettings.leadStatusId !== false && (
                 <Select
                   value={formData.leadStatusId}
@@ -377,7 +373,6 @@ export default function ClientsPage() {
                   </SelectContent>
                 </Select>
               )}
-=======
               {/* Lead Statuses */}
               <Select
                 value={formData.leadStatusId}
@@ -492,7 +487,6 @@ export default function ClientsPage() {
                   />
                 </PopoverContent>
               </Popover>
->>>>>>> d71b1fd5db4517703230cb595b61c8a9a1ede0a5
             </div>
           </FieldGroup>
 
