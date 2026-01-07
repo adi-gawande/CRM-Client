@@ -40,6 +40,7 @@ export default function ClientsPage() {
   const [leadStatuses, setLeadStatuses] = useState([]);
   const [leadSources, setLeadSources] = useState([]);
   const [leadRefferences, setLeadRefferences] = useState([]);
+  const [fieldSettings, setFieldSettings] = useState({});
 
   const [formData, setFormData] = useState({
     ClientName: "",
@@ -81,10 +82,13 @@ export default function ClientsPage() {
     const statuses = await get(`/lead-status?companyId=${companyId}`);
     const refferences = await get(`/lead-reference?companyId=${companyId}`);
     const sources = await get(`/lead-source?companyId=${companyId}`);
+    const settings = await get(`/field-settings?companyId=${companyId}&formType=prospect`);
+    
     setLeadRefferences(refferences);
     setLeadSources(sources);
     setLeadTypes(types);
     setLeadStatuses(statuses);
+    setFieldSettings(settings?.data || {});
   };
 
   useEffect(() => {
@@ -245,21 +249,25 @@ export default function ClientsPage() {
                 className="w-full sm:w-[calc(50%-0.5rem)]"
               />
 
-              <Input
-                name="AlternativePhoneNumber"
-                placeholder="Alternative Phone"
-                value={formData.AlternativePhoneNumber}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(50%-0.5rem)]"
-              />
+              {fieldSettings.AlternativePhoneNumber !== false && (
+                <Input
+                  name="AlternativePhoneNumber"
+                  placeholder="Alternative Phone"
+                  value={formData.AlternativePhoneNumber}
+                  onChange={handleChange}
+                  className="w-full sm:w-[calc(50%-0.5rem)]"
+                />
+              )}
 
-              <Input
-                name="AlternativeEmail"
-                placeholder="Alternative Email"
-                value={formData.AlternativeEmail}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(50%-0.5rem)]"
-              />
+              {fieldSettings.AlternativeEmail !== false && (
+                <Input
+                  name="AlternativeEmail"
+                  placeholder="Alternative Email"
+                  value={formData.AlternativeEmail}
+                  onChange={handleChange}
+                  className="w-full sm:w-[calc(50%-0.5rem)]"
+                />
+              )}
             </div>
           </FieldGroup>
 
@@ -269,190 +277,220 @@ export default function ClientsPage() {
             <FieldTitle>Lead Information</FieldTitle>
 
             <div className="flex flex-wrap gap-4">
-              {/* Lead Type */}
-              <Select
-                value={formData.leadTypeId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, leadTypeId: value })
-                }
-              >
-                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
-                  <SelectValue placeholder="Select Lead Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {leadTypes?.map((type) => (
-                    <SelectItem key={type._id} value={type._id}>
-                      {type.leadType}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {fieldSettings.leadTypeId !== false && (
+                <Select
+                  value={formData.leadTypeId}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, leadTypeId: value })
+                  }
+                >
+                  <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                    <SelectValue placeholder="Select Lead Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {leadTypes?.map((type) => (
+                      <SelectItem key={type._id} value={type._id}>
+                        {type.leadType}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
 
-              {/* Lead Source */}
-              <Select
-                value={formData.leadSourceId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, leadSourceId: value })
-                }
-              >
-                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
-                  <SelectValue placeholder="Select Lead Source" />
-                </SelectTrigger>
-                <SelectContent>
-                  {leadSources?.map((source) => (
-                    <SelectItem key={source._id} value={source._id}>
-                      {source.leadSource}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {fieldSettings.leadSourceId !== false && (
+                <Select
+                  value={formData.leadSourceId}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, leadSourceId: value })
+                  }
+                >
+                  <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                    <SelectValue placeholder="Select Lead Source" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {leadSources?.map((source) => (
+                      <SelectItem key={source._id} value={source._id}>
+                        {source.leadSource}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
 
-              {/* Lead Reference */}
-              <Select
-                value={formData.leadReferenceId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, leadReferenceId: value })
-                }
-              >
-                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
-                  <SelectValue placeholder="Select Lead Reference" />
-                </SelectTrigger>
-                <SelectContent>
-                  {leadRefferences?.map((ref) => (
-                    <SelectItem key={ref._id} value={ref._id}>
-                      {ref.leadReference}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {fieldSettings.leadReferenceId !== false && (
+                <Select
+                  value={formData.leadReferenceId}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, leadReferenceId: value })
+                  }
+                >
+                  <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                    <SelectValue placeholder="Select Lead Reference" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {leadRefferences?.map((ref) => (
+                      <SelectItem key={ref._id} value={ref._id}>
+                        {ref.leadReference}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
 
-              {/* Lead Statuses */}
-              <Select
-                value={formData.leadStatusId}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, leadStatusId: value })
-                }
-              >
-                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
-                  <SelectValue placeholder="Select Lead Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {leadStatuses?.map((ref) => (
-                    <SelectItem key={ref._id} value={ref._id}>
-                      {ref.leadStatus}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {fieldSettings.leadStatusId !== false && (
+                <Select
+                  value={formData.leadStatusId}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, leadStatusId: value })
+                  }
+                >
+                  <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                    <SelectValue placeholder="Select Lead Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {leadStatuses?.map((ref) => (
+                      <SelectItem key={ref._id} value={ref._id}>
+                        {ref.leadStatus}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
           </FieldGroup>
 
-          <FieldSeparator />
+          {(fieldSettings.OfficeAddress !== false || fieldSettings.City !== false || fieldSettings.State !== false || fieldSettings.Country !== false || fieldSettings.Pincode !== false) && (
+            <>
+              <FieldSeparator />
+              <FieldGroup>
+                <FieldTitle>Address</FieldTitle>
 
-          {/* ADDRESS */}
-          <FieldGroup>
-            <FieldTitle>Address</FieldTitle>
+                <div className="flex flex-wrap gap-4">
+                  {fieldSettings.OfficeAddress !== false && (
+                    <Input
+                      name="OfficeAddress"
+                      placeholder="Office Address"
+                      value={formData.OfficeAddress}
+                      onChange={handleChange}
+                      className="w-full"
+                    />
+                  )}
 
-            <div className="flex flex-wrap gap-4">
-              <Input
-                name="OfficeAddress"
-                placeholder="Office Address"
-                value={formData.OfficeAddress}
-                onChange={handleChange}
-                className="w-full"
-              />
+                  {fieldSettings.City !== false && (
+                    <Input
+                      name="City"
+                      placeholder="City"
+                      value={formData.City}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
 
-              <Input
-                name="City"
-                placeholder="City"
-                value={formData.City}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
+                  {fieldSettings.State !== false && (
+                    <Input
+                      name="State"
+                      placeholder="State"
+                      value={formData.State}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
 
-              <Input
-                name="State"
-                placeholder="State"
-                value={formData.State}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
+                  {fieldSettings.Country !== false && (
+                    <Input
+                      name="Country"
+                      placeholder="Country"
+                      value={formData.Country}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
 
-              <Input
-                name="Country"
-                placeholder="Country"
-                value={formData.Country}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
+                  {fieldSettings.Pincode !== false && (
+                    <Input
+                      name="Pincode"
+                      placeholder="Pincode"
+                      value={formData.Pincode}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
+                </div>
+              </FieldGroup>
+            </>
+          )}
 
-              <Input
-                name="Pincode"
-                placeholder="Pincode"
-                value={formData.Pincode}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
-            </div>
-          </FieldGroup>
+          {(fieldSettings.GSTNumber !== false || fieldSettings.PanNumber !== false || fieldSettings.Website !== false) && (
+            <>
+              <FieldSeparator />
+              <FieldGroup>
+                <FieldTitle>Tax & Business</FieldTitle>
 
-          <FieldSeparator />
+                <div className="flex flex-wrap gap-4">
+                  {fieldSettings.GSTNumber !== false && (
+                    <Input
+                      name="GSTNumber"
+                      placeholder="GST Number"
+                      value={formData.GSTNumber}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
 
-          {/* TAX & BUSINESS */}
-          <FieldGroup>
-            <FieldTitle>Tax & Business</FieldTitle>
+                  {fieldSettings.PanNumber !== false && (
+                    <Input
+                      name="PanNumber"
+                      placeholder="PAN Number"
+                      value={formData.PanNumber}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
 
-            <div className="flex flex-wrap gap-4">
-              <Input
-                name="GSTNumber"
-                placeholder="GST Number"
-                value={formData.GSTNumber}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
+                  {fieldSettings.Website !== false && (
+                    <Input
+                      name="Website"
+                      placeholder="Website"
+                      value={formData.Website}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                    />
+                  )}
+                </div>
+              </FieldGroup>
+            </>
+          )}
 
-              <Input
-                name="PanNumber"
-                placeholder="PAN Number"
-                value={formData.PanNumber}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
+          {(fieldSettings.EmergencyContactPerson !== false || fieldSettings.EmergencyContactNumber !== false) && (
+            <>
+              <FieldSeparator />
+              <FieldGroup>
+                <FieldTitle>Emergency Contact</FieldTitle>
 
-              <Input
-                name="Website"
-                placeholder="Website"
-                value={formData.Website}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(33.333%-0.75rem)]"
-              />
-            </div>
-          </FieldGroup>
+                <div className="flex flex-wrap gap-4">
+                  {fieldSettings.EmergencyContactPerson !== false && (
+                    <Input
+                      name="EmergencyContactPerson"
+                      placeholder="Emergency Contact Person"
+                      value={formData.EmergencyContactPerson}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(50%-0.5rem)]"
+                    />
+                  )}
 
-          <FieldSeparator />
-
-          {/* EMERGENCY */}
-          <FieldGroup>
-            <FieldTitle>Emergency Contact</FieldTitle>
-
-            <div className="flex flex-wrap gap-4">
-              <Input
-                name="EmergencyContactPerson"
-                placeholder="Emergency Contact Person"
-                value={formData.EmergencyContactPerson}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(50%-0.5rem)]"
-              />
-
-              <Input
-                name="EmergencyContactNumber"
-                placeholder="Emergency Contact Number"
-                value={formData.EmergencyContactNumber}
-                onChange={handleChange}
-                className="w-full sm:w-[calc(50%-0.5rem)]"
-              />
-            </div>
-          </FieldGroup>
+                  {fieldSettings.EmergencyContactNumber !== false && (
+                    <Input
+                      name="EmergencyContactNumber"
+                      placeholder="Emergency Contact Number"
+                      value={formData.EmergencyContactNumber}
+                      onChange={handleChange}
+                      className="w-full sm:w-[calc(50%-0.5rem)]"
+                    />
+                  )}
+                </div>
+              </FieldGroup>
+            </>
+          )}
 
           {/* <FieldSeparator /> */}
 
