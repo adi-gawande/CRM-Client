@@ -38,7 +38,8 @@ import {
 
 const PrefixPage = () => {
   
- const { companyId }  = useSelector((state) => state.auth.auth);
+ const authState = useSelector((state) => state.auth.auth);
+ const companyId = authState?.companyId;
   
   const [prefixes, setPrefixes] = useState([]);
   const [loading, setLoading] = useState(false);
