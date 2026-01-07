@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { get, post } from "@/lib/api";
-import { Plus } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
 
 import {
   Table,
@@ -30,6 +30,12 @@ import {
 } from "@/components/ui/dialog";
 import { FieldGroup, FieldSeparator, FieldTitle } from "@/components/ui/field";
 import { useSelector } from "react-redux";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
 export default function ClientsPage() {
   const [clients, setClients] = useState([]);
@@ -40,7 +46,12 @@ export default function ClientsPage() {
   const [leadStatuses, setLeadStatuses] = useState([]);
   const [leadSources, setLeadSources] = useState([]);
   const [leadRefferences, setLeadRefferences] = useState([]);
+<<<<<<< HEAD
   const [fieldSettings, setFieldSettings] = useState({});
+=======
+  const [sizes, setSizes] = useState([]);
+  const [sectors, setSectors] = useState([]);
+>>>>>>> d71b1fd5db4517703230cb595b61c8a9a1ede0a5
 
   const [formData, setFormData] = useState({
     ClientName: "",
@@ -64,6 +75,11 @@ export default function ClientsPage() {
     leadSourceId: "",
     leadReferenceId: "",
     leadStatusId: "",
+    sectorId: "",
+    sizeId: "",
+    budget: "",
+    revenue: "",
+    renewalDate: null,
     companyId,
   });
 
@@ -84,6 +100,8 @@ export default function ClientsPage() {
     const sources = await get(`/lead-source?companyId=${companyId}`);
     const settings = await get(`/field-settings?companyId=${companyId}&formType=prospect`);
     
+    const sizes = await get(`/size?companyId=${companyId}`);
+    const sectors = await get(`/size?companyId=${companyId}`);
     setLeadRefferences(refferences);
     setLeadSources(sources);
     setLeadTypes(types);
@@ -273,6 +291,8 @@ export default function ClientsPage() {
 
           <FieldSeparator />
 
+          <FieldSeparator />
+
           <FieldGroup>
             <FieldTitle>Lead Information</FieldTitle>
 
@@ -337,6 +357,7 @@ export default function ClientsPage() {
                 </Select>
               )}
 
+<<<<<<< HEAD
               {fieldSettings.leadStatusId !== false && (
                 <Select
                   value={formData.leadStatusId}
@@ -356,6 +377,122 @@ export default function ClientsPage() {
                   </SelectContent>
                 </Select>
               )}
+=======
+              {/* Lead Statuses */}
+              <Select
+                value={formData.leadStatusId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, leadStatusId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Lead Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {leadStatuses?.map((ref) => (
+                    <SelectItem key={ref._id} value={ref._id}>
+                      {ref.leadStatus}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Client Size */}
+
+              <Select
+                value={formData.sizeId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, sizeId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Size" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sizes?.map((ref) => (
+                    <SelectItem key={ref._id} value={ref._id}>
+                      {ref.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Client Sector */}
+
+              <Select
+                value={formData.sectorId}
+                onValueChange={(value) =>
+                  setFormData({ ...formData, sectorId: value })
+                }
+              >
+                <SelectTrigger className="w-full sm:w-[calc(33.333%-0.75rem)]">
+                  <SelectValue placeholder="Select Sector" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sectors?.map((ref) => (
+                    <SelectItem key={ref._id} value={ref._id}>
+                      {ref.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Budget */}
+              <Input
+                type="number"
+                placeholder="Budget"
+                className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                value={formData.budget || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, budget: e.target.value })
+                }
+              />
+
+              {/* Revenue */}
+              <Input
+                type="number"
+                placeholder="Revenue"
+                className="w-full sm:w-[calc(33.333%-0.75rem)]"
+                value={formData.revenue || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, revenue: e.target.value })
+                }
+              />
+
+              {/* Renewal Date */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full sm:w-[calc(33.333%-0.75rem)] justify-start text-left font-normal"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.renewalDate
+                      ? new Date(formData.renewalDate).toLocaleDateString()
+                      : "Select Renewal Date"}
+                  </Button>
+                </PopoverTrigger>
+
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    captionLayout="dropdown"
+                    selected={
+                      formData.renewalDate
+                        ? new Date(formData.renewalDate)
+                        : undefined
+                    }
+                    onSelect={(date) =>
+                      setFormData({
+                        ...formData,
+                        renewalDate: date?.toISOString(),
+                      })
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+>>>>>>> d71b1fd5db4517703230cb595b61c8a9a1ede0a5
             </div>
           </FieldGroup>
 

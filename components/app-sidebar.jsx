@@ -211,6 +211,8 @@ const navByTeam = {
     { title: "Designation", url: "/master/designation", icon: Tag },
     { title: "sector", url: "/master/sector", icon: Tag },
     { title: "size", url: "/master/size", icon: Tag },
+    { title: "Priority", url: "/master/priority", icon: Tag },
+    { title: "Task Status", url: "/master/task-status", icon: Hash },
   ],
 };
 
