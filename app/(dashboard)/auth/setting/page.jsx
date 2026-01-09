@@ -30,8 +30,8 @@ const baseFields = [
 
 const groups = {
   prospect: baseFields,
-  // lead: baseFields,
-  // client: baseFields,
+  lead: baseFields,
+  client: baseFields,
 };
 
 export default function SettingsPage() {
