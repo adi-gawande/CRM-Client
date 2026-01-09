@@ -30,6 +30,11 @@ import {
   CalendarPlus,
   ClipboardList,
   IndianRupee,
+  BriefcaseBusiness,
+  BriefcaseBusinessIcon,
+  CheckSquare,
+  Ticket,
+  UserCog,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -170,12 +175,23 @@ const navByTeam = {
 
   ADMIN: [
     { title: "Prospect", url: "/admin/prospect", icon: Hash },
-    { title: "Lead", url: "/admin/lead", icon: Hash },
-    { title: "Client", url: "/admin/client", icon: Hash },
-    { title: "Invoice", url: "/admin/invoice", icon: Hospital },
-    { title: "Task", url: "/admin/task", icon: Building },
-    { title: "Ticket", url: "/admin/ticket", icon: Building },
-    { title: "User", url: "/hr/user", icon: Users },
+    { title: "Lead", url: "/admin/lead", icon: BriefcaseBusinessIcon },
+    { title: "Client", url: "/admin/client", icon: Users },
+    {
+      title: "Invoice",
+      url: "/admin/invoice",
+      icon: FileText,
+      items: [
+        {
+          title: "Invoice Setting",
+          url: "/admin/invoice/setting",
+          icon: Settings,
+        },
+      ],
+    },
+    { title: "Task", url: "/admin/task", icon: CheckSquare },
+    { title: "Ticket", url: "/admin/ticket", icon: Ticket },
+    { title: "User", url: "/hr/user", icon: UserCog },
   ],
 
   MASTER: [

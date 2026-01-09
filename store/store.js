@@ -31,6 +31,7 @@ import teamReducer from "./teamSlice";
 import userReducer from "./userSlice";
 import authReducer from "./authSlice";
 import companyReducer from "./companySlice";
+import settingReducer from "./settingSlice";
 
 const persistConfig = {
   key: "root",
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   company: companyReducer,
+  setting: settingReducer,
   team: teamReducer,
 });
 

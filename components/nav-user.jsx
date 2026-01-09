@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearAuth } from "@/store/authSlice";
 import { clearCompany } from "@/store/companySlice";
 import { clearUser } from "@/store/userSlice";
+import { clearSetting } from "@/store/settingSlice";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -45,6 +46,7 @@ export function NavUser() {
     dispatch(clearAuth());
     dispatch(clearCompany());
     dispatch(clearUser());
+    dispatch(clearSetting());
     localStorage.clear();
   };
 

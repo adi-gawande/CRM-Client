@@ -17,6 +17,7 @@ import { setAuth } from "@/store/authSlice";
 import { setCompany } from "@/store/companySlice";
 import { useRouter } from "next/navigation";
 import { setActiveTeam } from "@/store/teamSlice";
+import { setSetting } from "@/store/settingSlice";
 // import { Spinner } from "@/components/ui/spinner";
 
 export function LoginForm({ className, ...props }) {
@@ -37,6 +38,12 @@ export function LoginForm({ className, ...props }) {
         if (response.data.user.role === "admin") {
           dispatch(setActiveTeam("ADMIN"));
           dispatch(setAuth(response.data.user));
+          dispatch(
+            setSetting({
+              adrak: "adrak",
+              adrakd: "adraks",
+            })
+          );
 
           let res = await get(`/our-client/${response.data.user.companyId}`);
           dispatch(setCompany(res.data));
